@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knect — The Student Hub for Everything TMU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   TOKENS — Dark Mode Default
+═══════════════════════════════════════ */
+:root {
+  --purple:      #6C63FF;
+  --purple-l:    #8B85FF;
+  --purple-dim:  rgba(108,99,255,0.14);
+  --purple-glow: rgba(108,99,255,0.28);
+  --cyan:        #4BE1FF;
+  --cyan-dim:    rgba(75,225,255,0.10);
+
+  --bg:    #0B0F1A;
+  --bg2:   #0F1422;
+  --bg3:   #141828;
+  --card:  #131828;
+  --card2: #1A1F32;
+  --border: rgba(108,99,255,0.18);
+  --border2: rgba(108,99,255,0.30);
+
+  --t1: #F0EEFF;
+  --t2: #9896BB;
+  --t3: #5A587A;
+  --t4: rgba(240,238,255,0.35);
+
+  --fh: 'Unbounded', sans-serif;
+  --fb: 'DM Sans', sans-serif;
+  --r:  20px;
+  --rsm: 12px;
+  --rlg: 32px;
+  --shadow: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-lg: 0 24px 60px rgba(0,0,0,0.5);
+  --shadow-p: 0 8px 32px rgba(108,99,255,0.22);
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--fb);
+  background: var(--bg);
+  color: var(--t1);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ═══════════ NAV ═══════════ */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  height:68px; padding:0 5vw;
+  display:flex; align-items:center; justify-content:space-between;
+  background: rgba(11,15,26,0.85);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(108,99,255,0.12);
+  transition: box-shadow 0.3s;
+}
+nav.scrolled { box-shadow: 0 4px 32px rgba(0,0,0,0.5); }
+.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; line-height:0; }
+.nav-logo-svg { width:36px; height:36px; flex-shrink:0; }
+.nav-wordmark {
+  font-family:var(--fh); font-weight:800; font-size:18px;
+  color:var(--t1); letter-spacing:-0.3px;
+}
+.nav-wordmark .nk { color:var(--purple-l); }
+.nav-links { display:flex; align-items:center; gap:32px; }
+.nav-links a {
+  text-decoration:none; color:var(--t2); font-size:14px; font-weight:400;
+  transition:color 0.2s;
+}
+.nav-links a:hover { color:var(--t1); }
+.btn-nav {
+  padding:10px 22px; border-radius:100px; font-size:13px; font-weight:600;
+  background:var(--purple); color:white; border:none; cursor:pointer;
+  font-family:var(--fb); transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
+  text-decoration:none; display:inline-block;
+  box-shadow: var(--shadow-p);
+}
+.btn-nav:hover { background:var(--purple-l); transform:translateY(-1px); }
+
+/* ═══════════ HERO ═══════════ */
+.hero {
+  min-height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  padding:130px 5vw 80px;
+  position:relative; overflow:hidden;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(108,99,255,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 95% 70%, rgba(75,225,255,0.10) 0%, transparent 55%),
+    var(--bg);
+}
+.hero::before {
+  content:'';position:absolute;inset:0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(108,99,255,0.08)'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.hero-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:64px;
+  align-items:center; max-width:1200px; width:100%; position:relative;
+}
+.hero-tag {
+  display:inline-flex; align-items:center; gap:8px;
+  background:rgba(108,99,255,0.12); border:1px solid rgba(108,99,255,0.28);
+  border-radius:100px; padding:6px 16px; font-size:12px; color:var(--purple-l);
+  font-weight:600; margin-bottom:24px; letter-spacing:0.3px;
+}
+.htag-dot { width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
+
+.hero h1 {
+  font-family:var(--fh);
+  font-size:clamp(30px, 3.8vw, 52px);
+  font-weight:900;
+  line-height:1.10;
+  letter-spacing:-1px;
+  color:var(--t1);
+  margin-bottom:22px;
+}
+.hero h1 .grad {
+  display:block;
+  background:linear-gradient(105deg, var(--purple-l) 0%, var(--cyan) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.hero-sub {
+  font-size:16px; color:var(--t2); line-height:1.75;
+  margin-bottom:36px; max-width:460px;
+}
+.hero-btns { display:flex; align-items:center; gap:12px; margin-bottom:48px; flex-wrap:wrap; }
+.btn-primary {
+  padding:14px 28px; border-radius:100px; font-size:14px; font-weight:600;
+  background:var(--purple); color:white; border:none; cursor:pointer;
+  font-family:var(--fb); transition:background 0.2s, transform 0.15s, box-shadow 0.2s;
+  text-decoration:none; display:inline-block;
+  box-shadow: var(--shadow-p);
+}
+.btn-primary:hover { background:var(--purple-l); transform:translateY(-2px); box-shadow:0 12px 36px rgba(108,99,255,0.38); }
+.btn-ghost {
+  padding:13px 26px; border-radius:100px; font-size:14px; font-weight:500;
+  background:transparent; color:var(--t1);
+  border:1.5px solid var(--border2); cursor:pointer;
+  font-family:var(--fb); transition:border-color 0.2s, background 0.2s;
+  text-decoration:none; display:inline-flex; align-items:center; gap:9px;
+}
+.btn-ghost:hover { border-color:var(--purple); background:var(--purple-dim); }
+.play-icon { width:20px;height:20px;border-radius:50%;background:var(--purple);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.play-icon::after { content:'';border-left:6px solid white;border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;margin-left:2px; }
+.hero-proof { display:flex; gap:0; }
+.proof-item { padding-right:24px; }
+.proof-item+.proof-item { padding-left:24px; border-left:1px solid var(--border); }
+.proof-n { font-family:var(--fh); font-size:18px; font-weight:800; color:var(--purple-l); }
+.proof-l { font-size:12px; color:var(--t3); margin-top:2px; }
+
+/* PHONE */
+.hero-visual { position:relative; display:flex; justify-content:center; align-items:center; }
+.phone-wrap { position:relative; width:280px; }
+.phone-frame {
+  width:280px; border-radius:46px;
+  border:7px solid #1E2238;
+  background:var(--bg); overflow:hidden;
+  box-shadow:0 56px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(108,99,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+.phone-notch { position:absolute;top:10px;left:50%;transform:translateX(-50%);width:86px;height:24px;background:#0B0F1A;border-radius:12px;z-index:10; }
+.phone-screen { background:var(--bg2); padding:44px 14px 20px; min-height:560px; }
+.ps-status { display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-bottom:16px; }
+.ps-top { margin-bottom:16px; }
+.ps-greeting { font-family:var(--fh);font-size:17px;font-weight:700;color:var(--t1); }
+.ps-sub { font-size:11px;color:var(--t3);margin-top:3px; }
+.acard {
+  border-radius:14px; padding:12px 14px; margin-bottom:9px;
+  background:var(--card); border:1px solid var(--border);
+}
+.acard-lbl { font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--t3);margin-bottom:5px; }
+.acard-title { font-size:12px;font-weight:600;color:var(--t1);margin-bottom:2px; }
+.acard-desc { font-size:10px;color:var(--t2); }
+.abadge { display:inline-block;padding:2px 8px;border-radius:100px;font-size:9px;font-weight:700;margin-top:6px; }
+.b-live { background:rgba(255,75,75,0.18);color:#FF8080; }
+.b-near { background:rgba(75,220,140,0.18);color:#5ADA9C; }
+.b-rec  { background:rgba(108,99,255,0.25);color:#A89EFF; }
+.b-cnt  { background:rgba(75,225,255,0.16);color:#4BE1FF; }
+
+/* Chips */
+.chip {
+  position:absolute; background:var(--card2); border-radius:100px;
+  padding:8px 14px; font-size:12px; font-weight:500; color:var(--t1);
+  border:1px solid var(--border2); white-space:nowrap;
+  box-shadow:0 8px 28px rgba(0,0,0,0.4);
+  display:flex; align-items:center; gap:7px;
+  animation:floaty 4s ease-in-out infinite;
+}
+.chip:nth-child(2){animation-delay:1s}
+.chip:nth-child(3){animation-delay:2s}
+.chip:nth-child(4){animation-delay:0.6s}
+@keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.c1{top:20px;right:-75px}
+.c2{top:160px;left:-88px}
+.c3{bottom:160px;right:-80px}
+.c4{bottom:60px;left:-70px}
+
+/* ═══════════ SHARED SECTION ═══════════ */
+section { padding:100px 5vw; }
+.si { max-width:1200px; margin:0 auto; }
+.stag {
+  display:inline-block; font-size:11px; font-weight:700;
+  text-transform:uppercase; letter-spacing:2.5px; color:var(--purple-l); margin-bottom:14px;
+}
+.sh {
+  font-family:var(--fh);
+  font-size:clamp(22px, 2.8vw, 38px);
+  font-weight:800; letter-spacing:-0.5px; line-height:1.14;
+  margin-bottom:16px; color:var(--t1);
+}
+.sh .g {
+  background:linear-gradient(105deg, var(--purple-l) 0%, var(--cyan) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.ssub { font-size:16px; color:var(--t2); max-width:560px; line-height:1.75; }
+
+/* ═══════════ UNIVERSITY SELECTOR ═══════════ */
+.s-selector { background:var(--bg2); }
+.selector-box {
+  max-width:600px; margin:48px auto 0;
+  background:var(--card); border-radius:var(--r);
+  border:1px solid var(--border2); padding:36px;
+}
+.sel-label { font-size:14px; font-weight:600; color:var(--t2); margin-bottom:12px; }
+.sel-wrap { position:relative; margin-bottom:16px; }
+.sel-search {
+  width:100%; padding:14px 48px 14px 18px;
+  border-radius:var(--rsm); background:var(--bg3);
+  border:1.5px solid var(--border); color:var(--t1);
+  font-family:var(--fb); font-size:15px;
+  outline:none; cursor:pointer;
+  transition:border-color 0.2s;
+  appearance:none; -webkit-appearance:none;
+}
+.sel-search:focus { border-color:var(--purple); }
+.sel-search option { background:var(--bg3); color:var(--t1); }
+.sel-chevron {
+  position:absolute; right:16px; top:50%; transform:translateY(-50%);
+  color:var(--t3); pointer-events:none; font-size:12px;
+}
+.sel-msg {
+  display:none; padding:14px 18px; border-radius:var(--rsm);
+  font-size:14px; font-weight:500; line-height:1.5;
+  margin-bottom:16px;
+}
+.sel-msg.tmu { background:rgba(75,225,255,0.10); border:1px solid rgba(75,225,255,0.22); color:#4BE1FF; display:block; }
+.sel-msg.other { background:rgba(108,99,255,0.10); border:1px solid var(--border); color:var(--purple-l); display:block; }
+.sel-cta {
+  width:100%; padding:14px; border-radius:var(--rsm); font-size:14px; font-weight:600;
+  background:var(--purple); color:white; border:none; cursor:pointer;
+  font-family:var(--fb); transition:background 0.2s; display:none;
+  box-shadow:var(--shadow-p);
+}
+.sel-cta.show { display:block; }
+.sel-cta:hover { background:var(--purple-l); }
+
+/* ═══════════ FEATURES ═══════════ */
+.s-features { background:var(--bg2); }
+.feat-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(310px,1fr));
+  gap:16px; margin-top:52px;
+}
+.feat-card {
+  background:var(--card); border-radius:var(--r); padding:30px;
+  border:1px solid var(--border);
+  transition:transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  position:relative; overflow:hidden;
+}
+.feat-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--purple), var(--cyan));
+  opacity:0; transition:opacity 0.25s;
+}
+.feat-card:hover { transform:translateY(-4px); box-shadow:0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px var(--border2); }
+.feat-card:hover::before { opacity:1; }
+.feat-emoji { font-size:30px; margin-bottom:14px; }
+.feat-title { font-family:var(--fb); font-size:16px; font-weight:700; color:var(--t1); margin-bottom:8px; letter-spacing:-0.2px; }
+.feat-desc { font-size:13px; color:var(--t2); line-height:1.65; }
+
+/* ═══════════ NEWS ═══════════ */
+.s-news { background:var(--bg2); }
+.news-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr));
+  gap:13px; margin-top:44px;
+}
+.nc {
+  background:var(--card); border-radius:var(--r); overflow:hidden;
+  border:1px solid var(--border);
+  transition:transform 0.2s, box-shadow 0.2s;
+  cursor:pointer;
+}
+.nc:hover { transform:translateY(-3px); box-shadow:0 16px 40px rgba(0,0,0,0.4); }
+.nc-bar { height:4px; }
+.nc-body { padding:18px; }
+.nc-cat { font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:7px; }
+.nc-title { font-family:var(--fb);font-size:14px;font-weight:600;color:var(--t1);line-height:1.38;margin-bottom:9px; }
+.nc-time { font-size:11px;color:var(--t3); }
+
+/* ═══════════ REVIEWS CAROUSEL ═══════════ */
+.s-reviews { background:var(--bg); overflow:hidden; }
+.carousel-outer { position:relative; margin-top:52px; }
+.carousel-track-wrap { overflow:hidden; }
+.carousel-track {
+  display:flex; gap:20px;
+  transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  will-change:transform;
+}
+.review-card {
+  background:var(--card); border-radius:var(--r); padding:28px;
+  border:1px solid var(--border); flex:0 0 calc(33.333% - 14px);
+  min-width:0; transition:border-color 0.2s;
+  position:relative; overflow:hidden;
+}
+.review-card::after {
+  content:'"'; position:absolute; top:8px; right:18px;
+  font-size:64px;line-height:1;color:rgba(108,99,255,0.08);font-family:serif;
+}
+.review-card:hover { border-color:var(--border2); }
+.rc-top { display:flex;align-items:center;gap:12px;margin-bottom:16px; }
+.rc-avatar {
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg, var(--purple), var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fh);font-weight:800;color:white;font-size:13px;
+}
+.rc-name { font-size:14px;font-weight:600;color:var(--t1); }
+.rc-prog { font-size:11px;color:var(--t3);margin-top:2px; }
+.rc-stars { color:#F5A623;font-size:12px;margin-bottom:12px; }
+.rc-text { font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:16px;font-style:italic; }
+.rc-tag {
+  display:inline-block;padding:4px 12px;border-radius:100px;
+  font-size:11px;font-weight:600;
+  background:var(--purple-dim);color:var(--purple-l);
+  border:1px solid rgba(108,99,255,0.22);
+}
+.carousel-nav {
+  display:flex; align-items:center; justify-content:center;
+  gap:16px; margin-top:36px;
+}
+.carousel-btn {
+  width:44px;height:44px;border-radius:50%;
+  background:var(--card); border:1px solid var(--border2);
+  color:var(--t1); cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+  transition:background 0.2s, border-color 0.2s;
+}
+.carousel-btn:hover { background:var(--purple); border-color:var(--purple); }
+.carousel-dots { display:flex;gap:8px;align-items:center; }
+.cdot-btn {
+  width:8px;height:8px;border-radius:50%;background:var(--t3);
+  border:none;cursor:pointer;transition:background 0.2s,transform 0.2s;padding:0;
+}
+.cdot-btn.active { background:var(--purple-l);transform:scale(1.3); }
+
+/* ═══════════ UNIVERSITIES ═══════════ */
+.s-uni { background:var(--bg2); }
+.uni-grid { display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:52px; }
+.uni-benefits { display:flex;flex-direction:column;gap:12px; }
+.uni-b {
+  display:flex;align-items:flex-start;gap:13px;padding:17px 19px;
+  border-radius:var(--rsm); border:1px solid var(--border);
+  background:var(--card); transition:border-color 0.2s,background 0.2s;
+}
+.uni-b:hover { border-color:var(--border2); background:var(--card2); }
+.uni-chk {
+  width:24px;height:24px;border-radius:50%;flex-shrink:0;margin-top:1px;
+  background:var(--purple-dim);display:flex;align-items:center;justify-content:center;
+  color:var(--purple-l);font-size:11px;font-weight:700;
+}
+.uni-b h4 { font-size:14px;font-weight:600;color:var(--t1);margin-bottom:2px; }
+.uni-b p { font-size:12px;color:var(--t2); }
+.dash {
+  background:var(--card); border-radius:var(--r);
+  border:1px solid var(--border); padding:24px;
+}
+.dash-hdr { font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;margin-bottom:18px; }
+.dash-metrics { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px; }
+.dm {
+  background:var(--bg3); border-radius:var(--rsm);padding:14px;
+  border:1px solid var(--border);
+}
+.dm-val { font-family:var(--fh);font-size:24px;font-weight:800;color:var(--t1); }
+.dm-val em { font-style:normal;font-size:12px;color:#52C98A;margin-left:4px; }
+.dm-lbl { font-size:11px;color:var(--t3);margin-top:2px; }
+.bar-row { margin-bottom:10px; }
+.bar-labels { display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-bottom:4px; }
+.bar-track { height:5px;border-radius:3px;background:var(--bg3);overflow:hidden; }
+.bar-fill { height:100%;border-radius:3px;background:linear-gradient(90deg,var(--purple),var(--cyan)); }
+
+/* ═══════════ FAQ ═══════════ */
+.s-faq { background:var(--bg); }
+.faq-list { max-width:760px; margin:48px auto 0; }
+.faq-item {
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+}
+.faq-q {
+  width:100%; display:flex;align-items:center;justify-content:space-between;
+  padding:20px 0; background:transparent; border:none; cursor:pointer;
+  color:var(--t1); font-family:var(--fb); font-size:15px; font-weight:500;
+  text-align:left; gap:16px; transition:color 0.2s;
+}
+.faq-q:hover { color:var(--purple-l); }
+.faq-icon {
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  background:var(--purple-dim); border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--purple-l);font-size:14px;font-weight:700;
+  transition:transform 0.3s,background 0.2s;
+}
+.faq-item.open .faq-icon { transform:rotate(45deg);background:var(--purple);color:white; }
+.faq-a {
+  max-height:0; overflow:hidden;
+  transition:max-height 0.35s ease, padding 0.35s ease;
+  font-size:14px; color:var(--t2); line-height:1.75;
+}
+.faq-item.open .faq-a { max-height:200px; padding-bottom:20px; }
+
+/* ═══════════ CTA ═══════════ */
+.s-cta {
+  background:
+    radial-gradient(ellipse 70% 65% at 50% 35%, rgba(108,99,255,0.22) 0%, transparent 65%),
+    linear-gradient(160deg, #080B1C 0%, #0E0A28 50%, #060E1C 100%);
+  text-align:center; padding:130px 5vw;
+  position:relative; overflow:hidden;
+}
+.s-cta .sh { font-size:clamp(24px,3.2vw,42px); margin-bottom:20px; }
+.s-cta .ssub { margin:0 auto 48px; max-width:460px; }
+.cta-btns { display:flex;justify-content:center;gap:12px;margin-bottom:48px;flex-wrap:wrap; }
+.btn-outline-white {
+  padding:14px 28px;border-radius:100px;font-size:14px;font-weight:500;
+  background:transparent;color:rgba(255,255,255,0.72);
+  border:1.5px solid rgba(255,255,255,0.18);cursor:pointer;
+  font-family:var(--fb);transition:border-color 0.2s;text-decoration:none;
+}
+.btn-outline-white:hover { border-color:rgba(255,255,255,0.5); }
+.cta-checks { display:flex;flex-wrap:wrap;justify-content:center;gap:20px; }
+.cta-chk { display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2); }
+.cta-chk .ck { color:var(--cyan);font-size:15px;font-weight:700; }
+
+/* ═══════════ FOOTER ═══════════ */
+footer {
+  background:#060911; padding:60px 5vw 36px;
+  border-top:1px solid rgba(255,255,255,0.05);
+}
+.fi { max-width:1200px;margin:0 auto; }
+.footer-top {
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:40px;flex-wrap:wrap;margin-bottom:44px;
+}
+.footer-brand p { font-size:13px;line-height:1.65;max-width:220px;margin-top:12px;color:var(--t3); }
+.footer-links { display:flex;gap:48px;flex-wrap:wrap; }
+.fc h5 {
+  font-family:var(--fh);font-size:10px;font-weight:700;
+  color:var(--t3);margin-bottom:14px;
+  text-transform:uppercase;letter-spacing:1.5px;
+}
+.fc a { display:block;font-size:13px;color:var(--t3);text-decoration:none;margin-bottom:9px;transition:color 0.2s; }
+.fc a:hover { color:var(--t1); }
+.footer-btm {
+  border-top:1px solid rgba(255,255,255,0.05);padding-top:22px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+}
+.footer-btm p { font-size:12px;color:var(--t3); }
+.socials { display:flex;gap:9px; }
+.soc {
+  width:32px;height:32px;border-radius:var(--rsm);
+  border:1px solid rgba(255,255,255,0.08);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t3);text-decoration:none;font-size:12px;font-weight:600;
+  transition:border-color 0.2s,color 0.2s;
+}
+.soc:hover { border-color:var(--purple);color:var(--purple-l); }
+
+/* ═══════════ SCROLL REVEAL ═══════════ */
+.fu { opacity:0; transform:translateY(28px); transition:opacity 0.65s ease, transform 0.65s ease; }
+.fu.vis { opacity:1; transform:translateY(0); }
+.fu2 { transition-delay:0.13s; }
+.fu3 { transition-delay:0.26s; }
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:900px) {
+  .hero-grid { grid-template-columns:1fr; }
+  .hero-visual { display:none; }
+  .personal-grid { grid-template-columns:1fr; }
+  .uni-grid { grid-template-columns:1fr; }
+  .review-card { flex:0 0 calc(100% - 0px); }
+}
+@media(max-width:640px) {
+  .nav-links { display:none; }
+  .footer-links { gap:28px; }
+  .footer-top { flex-direction:column; }
+  .review-card { flex:0 0 100%; }
+}
+@media(min-width:641px) and (max-width:1024px) {
+  .review-card { flex:0 0 calc(50% - 10px); }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <img src="data:image/png;base64,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" alt="Knect" style="width:36px;height:36px;object-fit:contain;">
+    <span class="nav-wordmark"><span class="nk">K</span>nect</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#universities">For Universities</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="#cta" class="btn-nav">Join The Waitlist</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tag"><span class="htag-dot"></span> Now accepting early access · TMU</div>
+      <h1>
+        The Student Hub for
+        <span class="grad">Everything TMU</span>
+      </h1>
+      <p class="hero-sub">Connect with students, discover events, join communities, find free food, stay informed, and make the most of your university experience.</p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-primary">Get Early Access</a>
+        <a href="#" class="btn-ghost"><span class="play-icon"></span>Watch Demo</a>
+      </div>
+      <div class="hero-proof">
+        <div class="proof-item">
+          <div class="proof-n">500+</div>
+          <div class="proof-l">Students Waiting</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-n">20+</div>
+          <div class="proof-l">Groups Interested</div>
+        </div>
+        <div class="proof-item">
+          <div class="proof-n" style="font-size:15px;color:var(--t3)">🏫</div>
+          <div class="proof-l">Built For TMU</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-wrap">
+        <div class="chip c1">🍕 Free Pizza Nearby</div>
+        <div class="chip c2">🎮 TMU Esports Tonight</div>
+        <div class="chip c3">🚀 Startup Society</div>
+        <div class="chip c4">📰 New Announcement</div>
+        <div class="phone-frame">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="ps-status"><span>9:41</span><span>●●● ▮</span></div>
+            <div class="ps-top">
+              <div class="ps-greeting">Hey, Alex 👋</div>
+              <div class="ps-sub">Here's what's happening at TMU</div>
+            </div>
+            <div class="acard">
+              <div class="acard-lbl">🔥 Happening Right Now</div>
+              <div class="acard-title">Startup Society Networking Night</div>
+              <div class="acard-desc">SLC 507 · 32 people going</div>
+              <span class="abadge b-live">LIVE</span>
+            </div>
+            <div class="acard">
+              <div class="acard-lbl">🍕 Free Food Alert</div>
+              <div class="acard-title">Free Pizza at Engineering Lounge</div>
+              <div class="acard-desc">Limited · Until 4:00 PM</div>
+              <span class="abadge b-near">100m away</span>
+            </div>
+            <div class="acard">
+              <div class="acard-lbl">📅 Upcoming Events</div>
+              <div class="acard-title">Deloitte Campus Recruitment</div>
+              <div class="acard-desc">Tomorrow · Rogers Communications Centre</div>
+              <span class="abadge b-rec">Recommended for you</span>
+            </div>
+            <div class="acard">
+              <div class="acard-lbl">👥 People You May Know</div>
+              <div class="acard-title">3 new connections in Global Mgmt</div>
+              <div class="acard-desc">Priya, Marcus, and Zoe recently joined</div>
+              <span class="abadge b-cnt">Connect</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIVERSITY SELECTOR -->
+<section class="s-selector">
+  <div class="si">
+    <div class="fu" style="text-align:center">
+      <div class="stag">Campus Expansion</div>
+      <h2 class="sh" style="text-align:center">Which university or college<br><span class="g">are you in?</span></h2>
+      <p class="ssub" style="margin:0 auto;text-align:center">Knect is starting at TMU and expanding to more campuses soon.</p>
+    </div>
+    <div class="selector-box fu fu2">
+      <div class="sel-label">Select your university or college</div>
+      <div class="sel-wrap">
+        <select class="sel-search" id="uniSelect" onchange="handleUniSelect(this)">
+          <option value="" disabled selected>Select your university or college</option>
+          <option value="tmu">Toronto Metropolitan University</option>
+          <option value="other">University of Toronto</option>
+          <option value="other">York University</option>
+          <option value="other">George Brown College</option>
+          <option value="other">Seneca Polytechnic</option>
+          <option value="other">Humber Polytechnic</option>
+          <option value="other">Ontario Tech University</option>
+          <option value="other">Centennial College</option>
+          <option value="other">Sheridan College</option>
+          <option value="other">Western University</option>
+          <option value="other">University of Waterloo</option>
+          <option value="other">McMaster University</option>
+          <option value="other">Queen's University</option>
+          <option value="other">Other</option>
+        </select>
+        <span class="sel-chevron">▼</span>
+      </div>
+      <div class="sel-msg" id="selMsg"></div>
+      <button class="sel-cta" id="selCta">Join Campus Waitlist →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="s-features" id="features">
+  <div class="si">
+    <div class="fu" style="text-align:center">
+      <div class="stag">Solution</div>
+      <h2 class="sh" style="text-align:center">Everything Happening On Campus.<br><span class="g">One App.</span></h2>
+      <p class="ssub" style="margin:0 auto;text-align:center">Six powerful tools built into a single, seamless experience for TMU students.</p>
+    </div>
+    <div class="feat-grid fu fu2">
+      <div class="feat-card"><div class="feat-emoji">👥</div><div class="feat-title">Student Networking</div><div class="feat-desc">Connect with verified TMU students in your program, clubs, and classes. Build your campus network from day one.</div></div>
+      <div class="feat-card"><div class="feat-emoji">📅</div><div class="feat-title">Event Discovery</div><div class="feat-desc">Find events tailored to your major and interests — from career fairs to club socials. Never miss what matters.</div></div>
+      <div class="feat-card"><div class="feat-emoji">📰</div><div class="feat-title">TMU Campus News</div><div class="feat-desc">Stay updated on important announcements, deadlines, and opportunities directly from official TMU channels.</div></div>
+      <div class="feat-card"><div class="feat-emoji">🍕</div><div class="feat-title">Free Food Alerts</div><div class="feat-desc">Real-time alerts when free food is available anywhere on campus. The most loved feature, guaranteed.</div></div>
+      <div class="feat-card"><div class="feat-emoji">🏆</div><div class="feat-title">Student Groups</div><div class="feat-desc">Discover and join campus organizations — from esports teams to investment clubs and everything between.</div></div>
+      <div class="feat-card"><div class="feat-emoji">💬</div><div class="feat-title">Real-Time Messaging</div><div class="feat-desc">Chat with students, event attendees, and group members. Coordination made effortless in one unified inbox.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section class="s-news">
+  <div class="si">
+    <div class="fu" style="text-align:center">
+      <div class="stag">Campus News</div>
+      <h2 class="sh" style="text-align:center">Never Miss What's <span class="g">Happening at TMU</span></h2>
+      <p class="ssub" style="margin:0 auto;text-align:center">Important updates, deadlines, and announcements — curated before they get buried in your inbox.</p>
+    </div>
+    <div class="news-grid fu fu2">
+      <div class="nc"><div class="nc-bar" style="background:#6C63FF"></div><div class="nc-body"><div class="nc-cat" style="color:#8B85FF">Academic</div><div class="nc-title">Final Exam Schedule Released</div><div class="nc-time">2 hours ago</div></div></div>
+      <div class="nc"><div class="nc-bar" style="background:#4BE1FF"></div><div class="nc-body"><div class="nc-cat" style="color:#4BE1FF">Careers</div><div class="nc-title">New Co-op Opportunities Available</div><div class="nc-time">4 hours ago</div></div></div>
+      <div class="nc"><div class="nc-bar" style="background:#FF6B9D"></div><div class="nc-body"><div class="nc-cat" style="color:#FF6B9D">Events</div><div class="nc-title">Annual Career Fair Announced for March</div><div class="nc-time">Yesterday</div></div></div>
+      <div class="nc"><div class="nc-bar" style="background:#FFA940"></div><div class="nc-body"><div class="nc-cat" style="color:#FFA940">Student Life</div><div class="nc-title">Exclusive Student Discounts Added</div><div class="nc-time">2 days ago</div></div></div>
+      <div class="nc"><div class="nc-bar" style="background:#52C98A"></div><div class="nc-body"><div class="nc-cat" style="color:#52C98A">Deadlines</div><div class="nc-title">Important Academic Deadlines This Month</div><div class="nc-time">3 days ago</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS CAROUSEL -->
+<section class="s-reviews">
+  <div class="si">
+    <div class="fu" style="text-align:center">
+      <div class="stag">Social Proof</div>
+      <h2 class="sh" style="text-align:center">Students Are Already <span class="g">Waiting For Knect</span></h2>
+      <p class="ssub" style="margin:0 auto;text-align:center">Real feedback from students who want a better way to connect on campus.</p>
+    </div>
+    <div class="carousel-outer fu fu2">
+      <div class="carousel-track-wrap">
+        <div class="carousel-track" id="carouselTrack">
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">MC</div><div><div class="rc-name">Maya Chen</div><div class="rc-prog">Business Management, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"Knect would make it so much easier to find events and meet people outside my classes."</p>
+            <span class="rc-tag">Networking</span>
+          </div>
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">DB</div><div><div class="rc-name">Daniel Brooks</div><div class="rc-prog">Computer Science, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"I hate checking five different platforms to see what's happening on campus. Knect fixes that."</p>
+            <span class="rc-tag">Campus Life</span>
+          </div>
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">AK</div><div><div class="rc-name">Aisha Khan</div><div class="rc-prog">Marketing, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"The personalized event recommendations would actually make me go to more student events."</p>
+            <span class="rc-tag">Events</span>
+          </div>
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">RP</div><div><div class="rc-name">Ryan Patel</div><div class="rc-prog">Engineering, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"Free food alerts alone would make me open this app every day."</p>
+            <span class="rc-tag">Free Food</span>
+          </div>
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">SN</div><div><div class="rc-name">Sophia Nguyen</div><div class="rc-prog">Creative Industries, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"I like that it's verified students only. It feels safer than random group chats."</p>
+            <span class="rc-tag">Verified Students</span>
+          </div>
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">EW</div><div><div class="rc-name">Ethan Williams</div><div class="rc-prog">Finance, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"Finding networking events, club events, and career opportunities in one place would be huge."</p>
+            <span class="rc-tag">Career</span>
+          </div>
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">JL</div><div><div class="rc-name">Jasmine Lee</div><div class="rc-prog">Nursing, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"I would use this to find classmates, study groups, and campus updates without digging through emails."</p>
+            <span class="rc-tag">Study Groups</span>
+          </div>
+          <div class="review-card">
+            <div class="rc-top"><div class="rc-avatar">OH</div><div><div class="rc-name">Omar Hassan</div><div class="rc-prog">Global Management, TMU</div></div></div>
+            <div class="rc-stars">★★★★★</div>
+            <p class="rc-text">"Knect feels like what a modern student portal should have been all along."</p>
+            <span class="rc-tag">Student Life</span>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prevBtn" onclick="carouselPrev()">←</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn" id="nextBtn" onclick="carouselNext()">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIVERSITIES -->
+<section class="s-uni" id="universities">
+  <div class="si">
+    <div class="fu">
+      <div class="stag">For Universities</div>
+      <h2 class="sh">A Better<br><span class="g">Connected Campus</span></h2>
+      <p class="ssub">Knect gives administrators tools to meaningfully improve student retention, engagement, and campus culture — backed by real data.</p>
+    </div>
+    <div class="uni-grid">
+      <div class="uni-benefits fu fu2">
+        <div class="uni-b"><div class="uni-chk">✓</div><div><h4>Increased Student Engagement</h4><p>Students spend more time connecting with campus life, not scrolling past it.</p></div></div>
+        <div class="uni-b"><div class="uni-chk">✓</div><div><h4>Higher Event Attendance</h4><p>Personalized event discovery drives real attendance to your programs.</p></div></div>
+        <div class="uni-b"><div class="uni-chk">✓</div><div><h4>Improved Student Retention</h4><p>Connected students are retained students. Reduce dropout rates meaningfully.</p></div></div>
+        <div class="uni-b"><div class="uni-chk">✓</div><div><h4>Better Campus Communication</h4><p>Push important updates directly to students who need to see them.</p></div></div>
+        <div class="uni-b"><div class="uni-chk">✓</div><div><h4>Stronger Campus Communities</h4><p>Give every club and organization the platform they deserve to grow.</p></div></div>
+      </div>
+      <div class="dash fu fu3">
+        <div class="dash-hdr">Campus Analytics Dashboard</div>
+        <div class="dash-metrics">
+          <div class="dm"><div class="dm-val">2,847<em>↑12%</em></div><div class="dm-lbl">Active Students</div></div>
+          <div class="dm"><div class="dm-val">94%<em>↑8%</em></div><div class="dm-lbl">Engagement Rate</div></div>
+          <div class="dm"><div class="dm-val">312<em>↑23%</em></div><div class="dm-lbl">Events This Month</div></div>
+          <div class="dm"><div class="dm-val">67<em>↑5%</em></div><div class="dm-lbl">Active Groups</div></div>
+        </div>
+        <div class="bar-row"><div class="bar-labels"><span>Student Engagement</span><span>94%</span></div><div class="bar-track"><div class="bar-fill" style="width:94%"></div></div></div>
+        <div class="bar-row"><div class="bar-labels"><span>Event Attendance</span><span>81%</span></div><div class="bar-track"><div class="bar-fill" style="width:81%"></div></div></div>
+        <div class="bar-row"><div class="bar-labels"><span>Community Growth</span><span>73%</span></div><div class="bar-track"><div class="bar-fill" style="width:73%"></div></div></div>
+        <div class="bar-row"><div class="bar-labels"><span>Platform Activity</span><span>88%</span></div><div class="bar-track"><div class="bar-fill" style="width:88%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="s-faq" id="faq">
+  <div class="si">
+    <div class="fu" style="text-align:center">
+      <div class="stag">FAQ</div>
+      <h2 class="sh" style="text-align:center">Frequently Asked <span class="g">Questions</span></h2>
+    </div>
+    <div class="faq-list fu fu2">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>What is Knect?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Knect is a student-only campus platform that helps students discover events, meet people, join communities, find free food, and stay updated on campus life — all in one place.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Who can use Knect?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Knect is launching for verified Toronto Metropolitan University students first. Students will need to verify their school email before accessing the app.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Is Knect only for TMU?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Knect is starting at TMU, but the goal is to expand to other universities and colleges across Canada. Join the waitlist to help us prioritize your campus.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>How does Knect verify students?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Students verify using their university email address. This helps keep the platform safer and focused on the student community.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Can student groups host events on Knect?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. Student groups, clubs, campus departments, and verified student hosts can create events, manage RSVPs, send updates, and reach students based on their interests.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Can I join if I go to another university?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">Yes. You can join the waitlist and select your university or college so Knect knows where to expand next. Your support helps bring Knect to your campus.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Will Knect replace existing school platforms?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">No. Knect is designed to complement existing platforms by making campus life easier — bringing event discovery, networking, and student communities into one modern app.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)"><span>Is Knect free for students?</span><span class="faq-icon">+</span></button>
+        <div class="faq-a">The student version is free to access during launch. Future premium tools may be added for organizations, partners, or universities down the line.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-cta" id="cta">
+  <div style="position:relative;max-width:700px;margin:0 auto">
+    <div class="fu">
+      <h2 class="sh" style="text-align:center;margin-bottom:20px">Join The Future Of<br><span class="g">Student Life</span></h2>
+      <p class="ssub" style="text-align:center;margin:0 auto 48px">Be among the first TMU students to experience Knect. Early access spots are limited.</p>
+      <div class="cta-btns">
+        <a href="#" class="btn-primary" style="padding:15px 36px;font-size:15px">Join The Waitlist</a>
+        <a href="#" class="btn-outline-white">Request A Demo</a>
+      </div>
+      <div class="cta-checks">
+        <div class="cta-chk"><span class="ck">✓</span> Verified TMU Students Only</div>
+        <div class="cta-chk"><span class="ck">✓</span> Built For Student Success</div>
+        <div class="cta-chk"><span class="ck">✓</span> Strengthens Campus Communities</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fi">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" style="display:flex;align-items:center;gap:9px;text-decoration:none">
+          <img src="data:image/png;base64,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" alt="Knect" style="width:30px;height:30px;object-fit:contain;">
+          <span style="font-family:var(--fh);font-weight:800;font-size:17px;color:var(--t1)"><span style="color:var(--purple-l)">K</span>nect</span>
+        </a>
+        <p>Made by TMU students for TMU students.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fc">
+          <h5>Product</h5>
+          <a href="#">Features</a><a href="#">Events</a><a href="#">Student Groups</a><a href="#">Campus News</a>
+        </div>
+        <div class="fc">
+          <h5>Company</h5>
+          <a href="#">About</a><a href="#universities">For Universities</a><a href="#">Contact</a><a href="#">Press</a>
+        </div>
+        <div class="fc">
+          <h5>Legal</h5>
+          <a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-btm">
+      <p>© 2025 Knect. Made with ❤️ at Toronto Metropolitan University.</p>
+      <div class="socials">
+        <a href="#" class="soc">𝕏</a>
+        <a href="#" class="soc">in</a>
+        <a href="#" class="soc">ig</a>
+        <a href="#" class="soc">tt</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav = document.getElementById('navbar');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 8));
+
+// Scroll reveal
+const fus = document.querySelectorAll('.fu');
+const obs = new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) { en.target.classList.add('vis'); obs.unobserve(en.target); } }), {threshold:0.08});
+fus.forEach(el => obs.observe(el));
+document.querySelectorAll('.hero .fu').forEach(el => el.classList.add('vis'));
+
+// University selector
+function handleUniSelect(sel) {
+  const msg = document.getElementById('selMsg');
+  const cta = document.getElementById('selCta');
+  msg.className = 'sel-msg';
+  if (!sel.value) { cta.classList.remove('show'); return; }
+  if (sel.value === 'tmu') {
+    msg.className = 'sel-msg tmu';
+    msg.textContent = "🎉 You're in the launch campus! You'll be among the first to access Knect.";
+  } else {
+    msg.className = 'sel-msg other';
+    msg.textContent = "Knect is coming to your campus soon. Join the waitlist to bring it there.";
+  }
+  cta.classList.add('show');
+}
+
+// FAQ accordion
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// CAROUSEL
+let carouselIdx = 0;
+let carouselPaused = false;
+let autoTimer;
+
+function getVisibleCount() {
+  return window.innerWidth >= 1024 ? 3 : window.innerWidth >= 641 ? 2 : 1;
+}
+
+const track = document.getElementById('carouselTrack');
+const cards = track.querySelectorAll('.review-card');
+const totalCards = cards.length;
+const dotsContainer = document.getElementById('carouselDots');
+
+function getTotalSlides() {
+  return totalCards - getVisibleCount() + 1;
+}
+
+function buildDots() {
+  dotsContainer.innerHTML = '';
+  const total = getTotalSlides();
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('button');
+    d.className = 'cdot-btn' + (i === carouselIdx ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  }
+}
+
+function goTo(idx) {
+  const total = getTotalSlides();
+  carouselIdx = Math.max(0, Math.min(idx, total - 1));
+  const cardWidth = cards[0].offsetWidth + 20;
+  track.style.transform = `translateX(-${carouselIdx * cardWidth}px)`;
+  document.querySelectorAll('.cdot-btn').forEach((d, i) => d.classList.toggle('active', i === carouselIdx));
+}
+
+function carouselNext() {
+  const total = getTotalSlides();
+  goTo(carouselIdx < total - 1 ? carouselIdx + 1 : 0);
+  resetAuto();
+}
+function carouselPrev() {
+  const total = getTotalSlides();
+  goTo(carouselIdx > 0 ? carouselIdx - 1 : total - 1);
+  resetAuto();
+}
+
+function resetAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => { if (!carouselPaused) carouselNext(); }, 3500);
+}
+
+const carouselEl = document.querySelector('.carousel-outer');
+carouselEl.addEventListener('mouseenter', () => carouselPaused = true);
+carouselEl.addEventListener('mouseleave', () => carouselPaused = false);
+
+// Touch swipe
+let touchStartX = 0;
+track.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, {passive:true});
+track.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) diff > 0 ? carouselNext() : carouselPrev();
+}, {passive:true});
+
+window.addEventListener('resize', () => { buildDots(); goTo(0); });
+buildDots();
+resetAuto();
+</script>
+</body>
+</html>
